@@ -9,6 +9,7 @@ Comment box redy for integration inside you app.
 
 - `tns plugin add nativescript-comments`
 
+# add [css](https://github.com/moayadnajd/nativescript-comments) css files 
 
 *Be sure to run a new build after adding plugins to avoid any issues
 
@@ -38,7 +39,8 @@ elementRegistryModule.registerElement("Comments", () => require("nativescript-co
 
 ## API
 
-see demo for more information 
+## see [demo](https://github.com/moayadnajd/nativescript-comments) for more details
+
 
 | Property | Default | Description |
 | --- | --- | --- |
@@ -56,3 +58,5 @@ see demo for more information
 ## License
 
 Apache License Version 2.0, January 2004
+
+
