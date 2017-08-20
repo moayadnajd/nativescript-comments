@@ -1,0 +1,35 @@
+﻿@import 'nativescript-theme-core/css/core.light.css';
+@import 'comments.css';
+.headerContent {
+    height: 56;
+    text-align: center;
+    vertical-align: center;
+}
+
+.drawerSectionHeader {
+    padding: 10;
+    background-color: lightgray;
+}
+
+.drawerSectionItem {
+    padding: 10;
+}
+
+.drawerContent {
+    background-color: gray;
+}
+
+.drawerContentText {
+    font-size: 13;
+    padding: 10;
+}
+
+.drawerContentButton {
+    margin: 10;
+    horizontal-align: left;
+}
+
+.drawerWhiteContentButton {
+    color: white;
+}
+
