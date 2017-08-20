@@ -1,40 +1,58 @@
-# Your Plugin Name
+# Nativescript Comments
 
-Add your plugin badges here. See [nativescript-urlhandler](https://github.com/hypery2k/nativescript-urlhandler) for example.
+Comment box redy for integration inside you app. 
 
-Then describe what's the purpose of your plugin. 
 
-In case you develop UI plugin, this is where you can add some screenshots.
-
-## (Optional) Prerequisites / Requirements
-
-Describe the prerequisites that the user need to have installed before using your plugin. See [nativescript-firebase plugin](https://github.com/eddyverbruggen/nativescript-plugin-firebase) for example.
+![Sample1](http://codeobia.com/screenshots/comments.gif)
 
 ## Installation
 
-Describe your plugin installation steps. Ideally it would be something like:
+- `tns plugin add nativescript-comments`
 
-```javascript
-tns plugin add <your-plugin-name>
-```
+
+*Be sure to run a new build after adding plugins to avoid any issues
 
 ## Usage 
-
-Describe any usage specifics for your plugin. Give examples for Android, iOS, Angular if needed. See [nativescript-drop-down](https://www.npmjs.com/package/nativescript-drop-down) for example.
 	
-	```javascript
-    Usage code snippets here
+	```xml
+        <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:UI="nativescript-comments">
+         <UI:Comments  like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
+        </page>
     ```)
+
+## Angular NativeScript
+### Regiter plugin in Component class
+
+```JAVASCRIPT
+
+import * as elementRegistryModule from 'nativescript-angular/element-registry';
+elementRegistryModule.registerElement("Comments", () => require("nativescript-comments).Comments);
+
+```
+
+### HTML
+```HTML
+    <Comments  [items]="comments"  (like)="function($event)"  (add)="function($event)" >
+    </Comments>
+```
 
 ## API
 
-Describe your plugin methods and properties here. See [nativescript-feedback](https://github.com/EddyVerbruggen/nativescript-feedback) for example.
-    
+see demo for more information 
+
 | Property | Default | Description |
 | --- | --- | --- |
-| some property | property default value | property description, default values, etc.. |
-| another property | property default value | property description, default values, etc.. |
-    
+| items | required | Array of comment object { image:" image src ", id: "unique identifier of the comment", comment: "comment text ", username: "user name ", likes: " number of  how many likes ", isLike: "boolean is the user like this or not ", datetime: "datetime of the comment" } |
+| add | function(arg){} | event on comment added you can access the object to push the comment buy args.object.push($comment-object) and you can get the id of the comment that replyed to by args.to |
+| like | function(arg){} | event on like clicked send with obj.to and you can toggle the like with args.object.toggle(args.to) |
+| scroll | true | enable or disable scrollview inside the comments holder |
+| imagetag | <Image /> | the xml element of the image  so you can change it if you need to add cache plugin or something |
+| plugin | empty string | plugin include statment like xmlns:IC="nativescript-web-image-cache" |
+| title | Comments | the title of the comments box |
+| replyText | reply | the reply button text |   
+| likeText | like | the like button text |   
+| toText | replying to : | replying to text  |   
+| sendText | comment | the comment send button text |   
 ## License
 
 Apache License Version 2.0, January 2004

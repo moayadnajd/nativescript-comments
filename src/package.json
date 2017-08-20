@@ -1,7 +1,7 @@
 {
   "name": "nativescript-comments",
   "version": "1.0.0",
-  "description": "Your awesome NativeScript plugin.",
+  "description": "Your awesome NativeScript plugin for render a comments box .",
   "main": "comments",
   "typings": "index.d.ts",
   "nativescript": {
@@ -29,11 +29,17 @@
     "NativeScript",
     "JavaScript",
     "Android",
+    "Comments",
+    "Comments box",
+    "Moayad",
+    "nadjawi",
+    "Jordan",
+    "Codeobia",
     "iOS"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "youremail@yourdomain.com"
+    "name": "Moayad Najdawi",
+    "email": "moayad@codeobia.com"
   },
   "bugs": {
     "url": "https://github.com/moayadnajd/nativescript-comments/issues"

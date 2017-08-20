@@ -12,8 +12,7 @@ export class Cache extends BaseViewModel {
   
   public plugin ='xmlns:IC="nativescript-web-image-cache"'
    
-
-  public comments = [{ image:"https://mel.cgiar.org/graph/getcimage/width/50/height/50/image/-user-b78ac78b7849a0fb1d4b2be8c28a24af7e9c8fae1470124136.jpg", id: this.random(1000), comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }];
+  public comments = [{ image:"http://liferay.github.io/clay/images/thumbnail_placeholder.gif", id: this.random(1000), comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }];
   
   
   constructor() {
@@ -29,7 +28,7 @@ export class Cache extends BaseViewModel {
     let self = this;
     args.object.busy(true)
     setTimeout(function () {
-      args.object.push({ image:"https://mel.cgiar.org/graph/getcimage/width/50/height/50/image/-user-b78ac78b7849a0fb1d4b2be8c28a24af7e9c8fae1470124136.jpg" , id: self.random(1000), comment: args.comment, username: "Demo User",likes:0,isLike:false,datetime: Date.now() });
+      args.object.push({ image:"http://liferay.github.io/clay/images/thumbnail_placeholder.gif", id: self.random(1000), comment: args.comment, username: "Demo User",likes:0,isLike:false,datetime: Date.now() });
       args.object.busy(false);
     }, 1000);
 
