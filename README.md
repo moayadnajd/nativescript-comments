@@ -15,11 +15,11 @@ Comments box ready for integration inside you'r native script app
 
 ## Usage 
 	
-	```xml
-        <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:UI="nativescript-comments">
-         <UI:Comments  like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
-        </page>
-    ```)
+```xml
+ <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:UI="nativescript-comments">
+  <UI:Comments  like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
+ </page>
+```)
 
 ## Angular NativeScript
 ### Regiter plugin in Component class
@@ -33,8 +33,11 @@ elementRegistryModule.registerElement("Comments", () => require("nativescript-co
 
 ### HTML
 ```HTML
-    <Comments  [items]="comments"  (like)="function($event)"  (add)="function($event)" >
-    </Comments>
+
+<Comments  [items]="comments"  (like)="function($event)"  (add)="function($event)" >
+    
+</Comments>
+
 ```
 
 ## API
