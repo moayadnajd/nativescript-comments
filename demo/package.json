@@ -9,7 +9,7 @@
     }
   },
   "dependencies": {
-    "nativescript-comments": "file:///Users/moayad/Documents/mobile/nativescript-comments/src",
+    "nativescript-comments": "^1.0.0",
     "nativescript-iqkeyboardmanager": "^1.1.0",
     "nativescript-telerik-ui": "^3.0.4",
     "nativescript-theme-core": "^1.0.4",
