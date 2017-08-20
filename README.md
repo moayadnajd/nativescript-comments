@@ -1,6 +1,6 @@
 # Nativescript Comments
 
-Comment box redy for integration inside you app. 
+Comments box ready for integration inside you'r native script app
 
 
 ![Sample1](http://codeobia.com/screenshots/comments.gif)
