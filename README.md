@@ -1,4 +1,6 @@
 # Nativescript Comments
+[![npm](https://img.shields.io/npm/v/nativescript-comment.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/nativescript-comment)
+[![npm](https://img.shields.io/npm/dt/nativescript-comment.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/nativescript-comment)
 
 Comments box ready for integration inside you'r native script app
 
