@@ -299,7 +299,8 @@ export class Common extends StackLayout {
   public push(obj) {
     let self = this;
     let scrolltome = <Label>this.rep.getViewById('scrolltome');
-    scrolltome.id = '';
+    if(scrolltome)
+      scrolltome.id = '';
     self.items.forEach((item) => {
       delete item.scrolltome;
     });
