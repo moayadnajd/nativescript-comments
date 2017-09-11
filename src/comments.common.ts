@@ -171,7 +171,7 @@ export class Common extends StackLayout {
     this.textField = <TextField>this.parseOptions(new TextField(), { className: "comment-field", row: 2, col: 0, hint: "Comment..." });
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
-    this.sendbtn = this.parseOptions(new Button(), { className: "comment-btn", row: 2, col: 1, text: this.sendText });
+    this.sendbtn = this.parseOptions(new Button(), { className: "comment-btn fa", row: 2, col: 1, text: this.sendText });
 
 
     let textFieldBindingOptions = {
