@@ -23,23 +23,34 @@ Comments box ready for integration inside you'r native script app
     </page>
 ```
 
-## Angular NativeScript
-### Regiter plugin in Component class
+## access events
+
+```
+     public like(args) {
+        // args.object.toggle(args.to) function increase or decrease the like count inside the comment
+        // args.to has the id of the liked item 
+        args.object.toggle(args.to);
+        console.log(this.comments.getItem(0).isLike);
+    }
+
+    public add(args) {
+        // args.object.busy(true) show the activity indicator
+        // args.object.busy(false) hide the activity indicator
+        // args.object.push({}) push new comment to the items 
+        let self = this;
+        args.object.busy(true)
+
+        // setTimeout is just to emulate server delay time 
+        setTimeout(function () {
+        args.object.push({ image: "~/images/icon-50.png", id: self.random(1000), comment: args.comment, replyTo: args.to, username: "Demo User", likes: 0, isLike: false, datetime: Date.now() });
+        console.log(self.comments.length);
+        args.object.busy(false);
+        }, 2000);
+    }
 
 ```
 
-    import * as elementRegistryModule from 'nativescript-angular/element-registry';
-    elementRegistryModule.registerElement("Comments", () => require("nativescript-comments).Comments);
 
-```
-
-### HTML
-```
-
-    <Comments  [items]="comments"  (like)="function($event)"  (add)="function($event)" >
-    </Comments>
-
-```
 
 ## API
 
