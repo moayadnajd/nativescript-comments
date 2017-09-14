@@ -12,12 +12,22 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { Button } from 'tns-core-modules/ui/button';
 import { Repeater } from 'tns-core-modules/ui/repeater';
 import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
+
 export class Common extends StackLayout {
   public newComment: string = "";
   public textReplyToHolder: any = "";
   public toText: string = "Repling to :";
   private replytoWraper: any;
-  public items: any = [];
+  private random(range: any) {
+    return Math.floor((Math.random() * range) + 1)
+  }
+  public items: any = [
+    { image: "~/images/icon-50.png", id: 1, comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    { image: "~/images/icon-50.png", id: 2, comment: "hello", username: "jone doh", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+  ];
+  ;
   public replyTo: number = 0;
   public textField: any;
   public scroll: any = true;
@@ -56,7 +66,6 @@ export class Common extends StackLayout {
       object: self,
       to: obj.get('dataid'),
     });
-
   }
   public toggle(to) {
     if (this.likeQ[to]) {
@@ -74,13 +83,37 @@ export class Common extends StackLayout {
         obj.className = "comment-action like";
       }
       obj.text = self.likeText + " (" + (obj.likes) + ")";
-      let index = self.items.findIndex((element) => {
+      let aitem = self.items.filter((element) => {
         return element.id === to;
       });
-      self.items[index].likes = obj.likes;
-      self.items[index].isLike = obj.isLike;
+
+      let index = self.items.indexOf(aitem[0]);
+
+      self.items.getItem(index).likes = obj.likes;
+      self.items.getItem(index).isLike = obj.isLike;
     }
 
+  }
+
+  private process() {
+
+    let replys = this.items.filter((item) => {
+      return item.replyTo
+    });
+    let comments = this.items.filter((item) => {
+      return !item.replyTo
+    });
+    let commentsandReplys = [];
+    comments.forEach(element => {
+      commentsandReplys.push(element);
+      replys.forEach(elementreply => {
+        if (element.id == elementreply.replyTo)
+          commentsandReplys.push(elementreply);
+      });
+    });
+
+
+    return commentsandReplys;
   }
   public commentCount() {
     let count = this.items.length;
@@ -99,6 +132,8 @@ export class Common extends StackLayout {
     // this.addChild(grid);
     this.addChild(this.headtitle);
     this.addChild(hrlight);
+    if (Object.prototype.toString.call(this.items) == '[object Array]')
+      this.items = new ObservableArray(this.items);
     // <GridLayout rows="*,auto">
     let wraper = this.parseOptions(new GridLayout(), { rows: ["star", "auto"] });
 
@@ -118,7 +153,11 @@ export class Common extends StackLayout {
     this.rep = new Repeater();
     if (this.items[this.items.length - 1])
       this.items[this.items.length - 1].scrolltome = 'scrolltome';
-    this.rep.items = this.items;
+
+
+    this.rep.items = this.process();
+
+
     this.rep.bindingContext = self;
     this.rep.id = 'mainrep';
     let commentsDateTo;
@@ -299,26 +338,16 @@ export class Common extends StackLayout {
   public push(obj) {
     let self = this;
     let scrolltome = <Label>this.rep.getViewById('scrolltome');
-    if(scrolltome)
+    if (scrolltome)
       scrolltome.id = '';
     self.items.forEach((item) => {
       delete item.scrolltome;
     });
     obj['scrolltome'] = "scrolltome";
-    if (!self.replyTo) {
-      self.items.push(obj);
-    } else {
-      let index = self.items.findIndex((element) => {
-        return element.id === self.replyTo;
-      });
-      let otherreply = self.items.filter((element) => {
-        return element.replyTo === self.replyTo;
-      });
-      index = index + otherreply.length;
-      obj['replyTo'] = self.replyTo;
-      self.items.splice(index + 1, 0, obj);
-    }
-    self.rep.refresh();
+   
+    self.items.push(obj);
+   
+    this.refresh();
     setTimeout(() => {
       if (this.scroll === true) {
         let scrolltome = <Label>this.rep.getViewById('scrolltome');
@@ -334,7 +363,10 @@ export class Common extends StackLayout {
     self.textField.text = "";
     self.headtitle.text = self.commentCount();
   }
-
+  public refresh() {
+    this.rep.items = this.process();
+    this.rep.refresh();
+  }
   private parseOptions(view, options) {
 
     Object.keys(options).forEach(function (key, index) {

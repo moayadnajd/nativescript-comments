@@ -9,7 +9,7 @@
     }
   },
   "dependencies": {
-    "nativescript-comments": "^1.0.0",
+    "nativescript-comments": "*",
     "nativescript-iqkeyboardmanager": "^1.1.0",
     "nativescript-telerik-ui": "^3.0.4",
     "nativescript-theme-core": "^1.0.4",
