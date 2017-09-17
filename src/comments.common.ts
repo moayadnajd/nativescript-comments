@@ -364,6 +364,7 @@ export class Common extends StackLayout {
     self.headtitle.text = self.commentCount();
   }
   public refresh() {
+    this.headtitle.text = this.commentCount();
     this.rep.items = this.process();
     this.rep.refresh();
   }
