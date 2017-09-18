@@ -80,8 +80,8 @@ export class Common extends StackLayout {
       }
       obj.text = self.likeText + " (" + (obj.likes) + ")";
  
-      // self.items.getItem(index).likes = obj.likes;
-      // self.items.getItem(index).isLike = obj.isLike;
+      self.items.getItem(index).likes = obj.likes;
+      self.items.getItem(index).isLike = obj.isLike;
     }
 
   }
