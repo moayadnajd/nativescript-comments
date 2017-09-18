@@ -1,6 +1,6 @@
 {
   "name": "nativescript-comments",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Your awesome NativeScript plugin for render a comments box .",
   "main": "comments",
   "typings": "index.d.ts",

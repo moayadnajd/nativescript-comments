@@ -6,7 +6,7 @@ export class HelloWorldModel extends BaseViewModel {
     return Math.floor((Math.random() * range) + 1)
   }
   public comments = new ObservableArray([
-    { image: "~/images/icon-50.png", id: 1, comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    { image: "~/images/icon-50.png", id: 1, comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: false, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
     { image: "~/images/icon-50.png", id: 2, comment: "hello", username: "Hashem najdawi", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
     { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
   ]);

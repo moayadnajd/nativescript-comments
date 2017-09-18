@@ -22,12 +22,8 @@ export class Common extends StackLayout {
   private random(range: any) {
     return Math.floor((Math.random() * range) + 1)
   }
-  public items: any = [
-    { image: "~/images/icon-50.png", id: 1, comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-    { image: "~/images/icon-50.png", id: 2, comment: "hello", username: "jone doh", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-    { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
-  ];
-  ;
+  public items: any ;
+  
   public replyTo: number = 0;
   public textField: any;
   public scroll: any = true;
@@ -83,14 +79,9 @@ export class Common extends StackLayout {
         obj.className = "comment-action like";
       }
       obj.text = self.likeText + " (" + (obj.likes) + ")";
-      let aitem = self.items.filter((element) => {
-        return element.id === to;
-      });
-
-      let index = self.items.indexOf(aitem[0]);
-
-      self.items.getItem(index).likes = obj.likes;
-      self.items.getItem(index).isLike = obj.isLike;
+ 
+      // self.items.getItem(index).likes = obj.likes;
+      // self.items.getItem(index).isLike = obj.isLike;
     }
 
   }
@@ -367,6 +358,7 @@ export class Common extends StackLayout {
     this.headtitle.text = this.commentCount();
     this.rep.items = this.process();
     this.rep.refresh();
+    this.rep.className="comments-repeater";
   }
   private parseOptions(view, options) {
 
