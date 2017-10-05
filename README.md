@@ -48,8 +48,20 @@ Comments box ready for integration inside you'r native script app
         }, 2000);
     }
 
-```
+    public edit(args) {
+        // the edited comment 
+        alert(args.comment);
+        //the id of the edited comment
+        alert(args.id)
+    }
 
+        public delete(args) {
+        //the id of the deleted comment
+        alert(args.id);
+    }
+
+```
+### you can edit or delete by longPress on the comment that have {editing:true} in the comment object 
 
 
 ## API
@@ -69,7 +81,9 @@ Comments box ready for integration inside you'r native script app
 | replyText | reply | the reply button text |   
 | likeText | like | the like button text |   
 | toText | replying to : | replying to text  |   
-| sendText | comment | the comment send button text |   
+| sendText | comment | the comment send button text |
+|editingText | editing your comment | the editing help text when you hit edit | 
+|xbtn | x | the exit edit or reply text can be font icon  |     
 ## License
 
 Apache License Version 2.0, January 2004

@@ -1,6 +1,6 @@
 <Page 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
-   xmlns:nsDrawer="nativescript-telerik-ui/sidedrawer"
+   xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
   xmlns:UI="nativescript-comments" loaded="pageLoaded" class="page">
  <Page.actionBar>
      <ActionBar title="Default">
@@ -27,7 +27,7 @@
       </StackLayout>
     </nsDrawer:RadSideDrawer.drawerContent>
     <nsDrawer:RadSideDrawer.mainContent>
-   
+   <ScrollView>
        <StackLayout class="p-20" id="mainstack">
   
           <Image android:width="100"  ios:height="300" android:height="100" src="~/images/shoe.jpg" stretch="fill"  />
@@ -35,10 +35,11 @@
           <Label class="h2 p-b-10" text="NIKE AIR ZOOM PEGASUS" textWrap="true" />
 
           <Label class="p-b-10" text="The Nike Air Zoom Pegasus 34 Mo Farah. Inspired by 2017 10k world champion, Mo Farah. " textWrap="true" />
-           
-           <UI:Comments  like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
+        
+           <UI:Comments scroll="false" delete="{{ delete }}" edit="{{ edit }}" sendText="{{'fa-send' | fontawesome }}" like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
 
           </StackLayout>
+        </ScrollView>
     </nsDrawer:RadSideDrawer.mainContent>
   </nsDrawer:RadSideDrawer> 
   

@@ -1,7 +1,7 @@
 
 import { Observable } from 'tns-core-modules/data/observable';
 
-import drawerModule = require("nativescript-telerik-ui/sidedrawer");
+import drawerModule = require("nativescript-pro-ui/sidedrawer");
 import frameModule = require("tns-core-modules/ui/frame");
 export class BaseViewModel extends Observable {
 
