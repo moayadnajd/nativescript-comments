@@ -38,6 +38,7 @@ export class Common extends StackLayout {
   public static deleteEvent: string = "delete";
   public static editEvent: string = "edit";
   public static addEvent: string = "add";
+  public static userEvent: string = "user";
   public replyText = "Reply";
   public likeText = "like";
   public activityindecator: ActivityIndicator;
@@ -60,6 +61,35 @@ export class Common extends StackLayout {
     (<TextField>self.textField).focus();
   }
 
+  public userNameAction(args) {
+     //alert('prehello');
+    let self = <Common>args.object.parent.parent.parent.bindingContext;
+    let obj = args.object;
+    self.userAction(obj.get('dataid'));
+  }
+
+  public userImageAction(args) {
+    //alert('prehello');
+    let self = <Common>args.object.parent.parent.bindingContext;
+    let obj = args.object;
+    self.userAction(obj.get('dataid'));
+   
+  }
+
+  public userAction(id) {
+    let self = this
+    let index :any;
+    index = self.items.filter((item) => {
+      return item.id == id;
+    });
+    index = self.items.indexOf(index[0]);
+    
+    self.notify({
+      eventName: Common.userEvent,
+      object: self,
+      comment: self.items.getItem(index),
+    });
+  }
   public likeAction(args) {
     let obj = args.object;
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -75,16 +105,16 @@ export class Common extends StackLayout {
   public LongPress(args) {
 
     let obj = args.object;
-    if(obj.get('dataediting')== true){
-    let self = <Common>args.object.parent.bindingContext;
-    dialogs.action("What to do ?", "Cancel", ["Delete", "Edit"]).then(function (result) {
-      if (result == "Delete") {
-        self.delete(obj.get('dataid'));
-      } else if (result == "Edit") {
-        self.edit(obj.get('dataid'), obj.get('datacomment'));
-      }
-    });
-  }
+    if (obj.get('dataediting') == true) {
+      let self = <Common>args.object.parent.bindingContext;
+      dialogs.action("What to do ?", "Cancel", ["Delete", "Edit"]).then(function (result) {
+        if (result == "Delete") {
+          self.delete(obj.get('dataid'));
+        } else if (result == "Edit") {
+          self.edit(obj.get('dataid'), obj.get('datacomment'));
+        }
+      });
+    }
   }
   public edit(id, comment) {
     this.replyingto.text = this.editingText;
@@ -186,7 +216,7 @@ export class Common extends StackLayout {
     if (this.imagetag)
       imageholder = this.imagetag;
     else
-      imageholder = '<Image verticalAlignment="top" row="0" col="0" src="{{ image }}" class="comment-userimage img-circle" height="45" width="45" stretch="fill" />';
+      imageholder = '<Image  src="{{ image }}" class="comment-userimage img-circle" height="45" width="45" stretch="fill" />';
     let plugin = "";
     if (this.plugin)
       plugin = this.plugin;
@@ -213,9 +243,11 @@ export class Common extends StackLayout {
 
     this.rep.itemTemplate = `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${ plugin} class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
+        </StackLayout>
         <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
           <Label row="1" col="1" text="{{ comment }}" textWrap="true" />
           <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
             <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />

@@ -30,6 +30,11 @@ export class HelloWorldModel extends BaseViewModel {
 
   }
 
+  public userTap(args){
+
+   alert(args.comment.username) ;
+
+  }
   public edit(args) {
     alert(args.comment);
   }
