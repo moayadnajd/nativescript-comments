@@ -253,7 +253,6 @@ export class Common extends StackLayout {
             <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
             <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
             <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
-            <Label  text="." class="comment-seprator" />
             <Label  id="{{ id }}" text="{{ ${commentsDateTo}(datetime) }}" class="comment-details" textWrap="true" />
           </StackLayout>
           <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
