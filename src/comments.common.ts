@@ -12,20 +12,33 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { Button } from 'tns-core-modules/ui/button';
 import { Repeater } from 'tns-core-modules/ui/repeater';
 import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
+
+
 export class Common extends StackLayout {
   public newComment: string = "";
   public textReplyToHolder: any = "";
   public toText: string = "Repling to :";
   private replytoWraper: any;
-  public items: any = [];
+  private random(range: any) {
+    return Math.floor((Math.random() * range) + 1);
+  }
+  public xbtn = "x";
+  public editing: number = 0;
+  public items: ObservableArray<any>;
+  public replyingto: Label;
   public replyTo: number = 0;
   public textField: any;
+  public editingText = "Editing your comment";
   public scroll: any = true;
   public imagetag: any;
   private initscroll = true;
   public title: string = "Comments";
   public static likeEvent: string = "like";
+  public static deleteEvent: string = "delete";
+  public static editEvent: string = "edit";
   public static addEvent: string = "add";
+  public static userEvent: string = "user";
   public replyText = "Reply";
   public likeText = "like";
   public activityindecator: ActivityIndicator;
@@ -40,12 +53,43 @@ export class Common extends StackLayout {
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
     let obj = args.object;
+    self.editing = 0;
+    self.replyingto.text = self.toText;
     self.replytoWraper.visibility = "visible";
     self.replyTo = obj.get('dataid');
     self.textReplyToHolder.text = obj.get('dataname');
     (<TextField>self.textField).focus();
   }
 
+  public userNameAction(args) {
+     //alert('prehello');
+    let self = <Common>args.object.parent.parent.parent.bindingContext;
+    let obj = args.object;
+    self.userAction(obj.get('dataid'));
+  }
+
+  public userImageAction(args) {
+    //alert('prehello');
+    let self = <Common>args.object.parent.parent.bindingContext;
+    let obj = args.object;
+    self.userAction(obj.get('dataid'));
+   
+  }
+
+  public userAction(id) {
+    let self = this
+    let index :any;
+    index = self.items.filter((item) => {
+      return item.id == id;
+    });
+    index = self.items.indexOf(index[0]);
+    
+    self.notify({
+      eventName: Common.userEvent,
+      object: self,
+      comment: self.items.getItem(index),
+    });
+  }
   public likeAction(args) {
     let obj = args.object;
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -56,7 +100,49 @@ export class Common extends StackLayout {
       object: self,
       to: obj.get('dataid'),
     });
+  }
 
+  public LongPress(args) {
+
+    let obj = args.object;
+    if (obj.get('dataediting') == true) {
+      let self = <Common>args.object.parent.bindingContext;
+      dialogs.action("What to do ?", "Cancel", ["Delete", "Edit"]).then(function (result) {
+        if (result == "Delete") {
+          self.delete(obj.get('dataid'));
+        } else if (result == "Edit") {
+          self.edit(obj.get('dataid'), obj.get('datacomment'));
+        }
+      });
+    }
+  }
+  public edit(id, comment) {
+    this.replyingto.text = this.editingText;
+    this.textReplyToHolder.text = "";
+    this.replytoWraper.visibility = "visible";
+    this.editing = id;
+    (<TextField>this.textField).text = comment;
+    (<TextField>this.textField).focus();
+  }
+  public delete(id) {
+
+    let self = this;
+    dialogs.confirm("Are you sure ?").then(function (result) {
+      if (result) {
+        self.items.forEach(element => {
+          if (element.id == id || element.replyTo == id) {
+            let index = self.items.indexOf(element);
+            self.items.splice(index, 1);
+          }
+        });
+        self.notify({
+          eventName: Common.deleteEvent,
+          object: self,
+          id: id,
+        });
+        self.refresh();
+      }
+    });
   }
   public toggle(to) {
     if (this.likeQ[to]) {
@@ -74,13 +160,35 @@ export class Common extends StackLayout {
         obj.className = "comment-action like";
       }
       obj.text = self.likeText + " (" + (obj.likes) + ")";
-      let index = self.items.findIndex((element) => {
-        return element.id === to;
+      let index = self.items.filter((item) => {
+        return item.id == to;
       });
-      self.items[index].likes = obj.likes;
-      self.items[index].isLike = obj.isLike;
+      index = self.items.indexOf(index[0]);
+      self.items.getItem(index).likes = obj.likes;
+      self.items.getItem(index).isLike = obj.isLike;
     }
 
+  }
+
+  private process() {
+
+    let replys = this.items.filter((item) => {
+      return item.replyTo;
+    });
+    let comments = this.items.filter((item) => {
+      return !item.replyTo;
+    });
+    let commentsandReplys = [];
+    comments.forEach(element => {
+      commentsandReplys.push(element);
+      replys.forEach(elementreply => {
+        if (element.id == elementreply.replyTo)
+          commentsandReplys.push(elementreply);
+      });
+    });
+
+
+    return commentsandReplys;
   }
   public commentCount() {
     let count = this.items.length;
@@ -99,6 +207,8 @@ export class Common extends StackLayout {
     // this.addChild(grid);
     this.addChild(this.headtitle);
     this.addChild(hrlight);
+    if (Object.prototype.toString.call(this.items) == '[object Array]')
+      this.items = new ObservableArray(this.items);
     // <GridLayout rows="*,auto">
     let wraper = this.parseOptions(new GridLayout(), { rows: ["star", "auto"] });
 
@@ -106,7 +216,7 @@ export class Common extends StackLayout {
     if (this.imagetag)
       imageholder = this.imagetag;
     else
-      imageholder = '<Image verticalAlignment="top" row="0" col="0" src="{{ image }}" class="comment-userimage img-circle" height="45" width="45" stretch="fill" />';
+      imageholder = '<Image  src="{{ image }}" class="comment-userimage img-circle" height="45" width="45" stretch="fill" />';
     let plugin = "";
     if (this.plugin)
       plugin = this.plugin;
@@ -118,7 +228,11 @@ export class Common extends StackLayout {
     this.rep = new Repeater();
     if (this.items[this.items.length - 1])
       this.items[this.items.length - 1].scrolltome = 'scrolltome';
-    this.rep.items = this.items;
+
+
+    this.rep.items = this.process();
+
+
     this.rep.bindingContext = self;
     this.rep.id = 'mainrep';
     let commentsDateTo;
@@ -128,10 +242,12 @@ export class Common extends StackLayout {
       commentsDateTo = "commentsDateTo";
 
     this.rep.itemTemplate = `
-        <GridLayout  ${ plugin} class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${ plugin} class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
+        </StackLayout>
         <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
           <Label row="1" col="1" text="{{ comment }}" textWrap="true" />
           <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
             <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
@@ -154,16 +270,17 @@ export class Common extends StackLayout {
 
     this.replytoWraper = this.parseOptions(new StackLayout(), { row: 0, colSpan: 2, class: "comment-reply-wrapper", orientation: "horizontal", width: "100%", visibility: "collapse" });
 
-    let xbtn = this.parseOptions(new Label(), { className: "comment-reply-x-btn", row: 1, col: 1, text: "x" });
-    let replyingto = this.parseOptions(new Label(), { className: "comment-replyingto", text: this.toText });
+    let xbtn = this.parseOptions(new Label(), { className: "comment-reply-x-btn fa", row: 1, col: 1, text: this.xbtn });
+    this.replyingto = this.parseOptions(new Label(), { className: "comment-replyingto", text: this.toText });
     this.textReplyToHolder = this.parseOptions(new Label(), { className: "comment-reply-username", text: this.replyTo });
     this.replytoWraper.addChild(xbtn);
-    this.replytoWraper.addChild(replyingto);
+    this.replytoWraper.addChild(this.replyingto);
     this.replytoWraper.addChild(this.textReplyToHolder);
 
     xbtn.on('tap', () => {
       self.replytoWraper.visibility = "collapse";
       self.replyTo = 0;
+      self.editing = 0;
     });
 
     // TextField class="comment-field" row= "1" col= "0" hint= "Comment..." text= "" />
@@ -182,12 +299,31 @@ export class Common extends StackLayout {
 
     this.sendbtn.on('tap', () => {
       if (!this.activityindecator.busy) {
-        self.notify({
-          eventName: Common.addEvent,
-          object: self,
-          comment: self.newComment,
-          to: self.replyTo,
-        });
+
+        if (self.editing != 0) {
+          self.notify({
+            eventName: Common.editEvent,
+            object: self,
+            comment: self.newComment,
+            id: self.editing,
+          });
+          let toedit = self.items.filter((elemet) => {
+            return elemet.id == self.editing;
+          });
+          self.items.getItem(self.items.indexOf(toedit[0])).comment = self.newComment;
+          this.replytoWraper.visibility = "collapse";
+          this.editing = 0;
+          (<TextField>this.textField).text = "";
+          self.refresh();
+        }
+        else
+          self.notify({
+            eventName: Common.addEvent,
+            object: self,
+            comment: self.newComment,
+            to: self.replyTo,
+          });
+
       }
     });
 
@@ -286,38 +422,28 @@ export class Common extends StackLayout {
     if (flag) {
       this.activityindecator.busy = true;
       this.activityindecator.className = 'comment-indicator loading';
-      this.sendbtn.className = 'comment-btn loading';
+      this.sendbtn.className = 'fa comment-btn loading';
     }
     else {
       this.activityindecator.busy = false;
       this.activityindecator.className = 'comment-indicator';
-      this.sendbtn.className = 'comment-btn';
+      this.sendbtn.className = 'fa comment-btn';
 
     }
   }
   public push(obj) {
     let self = this;
     let scrolltome = <Label>this.rep.getViewById('scrolltome');
-    if(scrolltome)
+    if (scrolltome)
       scrolltome.id = '';
     self.items.forEach((item) => {
       delete item.scrolltome;
     });
     obj['scrolltome'] = "scrolltome";
-    if (!self.replyTo) {
-      self.items.push(obj);
-    } else {
-      let index = self.items.findIndex((element) => {
-        return element.id === self.replyTo;
-      });
-      let otherreply = self.items.filter((element) => {
-        return element.replyTo === self.replyTo;
-      });
-      index = index + otherreply.length;
-      obj['replyTo'] = self.replyTo;
-      self.items.splice(index + 1, 0, obj);
-    }
-    self.rep.refresh();
+
+    self.items.push(obj);
+
+    this.refresh();
     setTimeout(() => {
       if (this.scroll === true) {
         let scrolltome = <Label>this.rep.getViewById('scrolltome');
@@ -333,7 +459,12 @@ export class Common extends StackLayout {
     self.textField.text = "";
     self.headtitle.text = self.commentCount();
   }
-
+  public refresh() {
+    this.headtitle.text = this.commentCount();
+    this.rep.items = this.process();
+    this.rep.refresh();
+    this.rep.className = "comments-repeater";
+  }
   private parseOptions(view, options) {
 
     Object.keys(options).forEach(function (key, index) {

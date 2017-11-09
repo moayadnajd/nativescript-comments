@@ -1,6 +1,6 @@
 <Page 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
-   xmlns:nsDrawer="nativescript-telerik-ui/sidedrawer"
+   xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
   xmlns:UI="nativescript-comments" loaded="pageLoaded" class="page">
  <Page.actionBar>
      <ActionBar title="Cache plugins">

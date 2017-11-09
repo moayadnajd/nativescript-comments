@@ -1,7 +1,9 @@
 ﻿import * as application from 'tns-core-modules/application';
 let resorce = application.getResources();
+import { Fontawesome } from 'nativescript-fontawesome';
+Fontawesome.init();
 
-// this is the date handler used in text page 
+// this is the date handler used in text page
 resorce['arabicDateTime'] = (time: any) => {
     switch (typeof <any>time) {
         case 'number':
