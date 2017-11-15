@@ -204,7 +204,8 @@ export class Common extends StackLayout {
     if (this.scroll === "false") this.scroll = false;
     else this.scroll = true;
     if (this.canComment === "false") this.canComment = false;
-    else this.canComment = true;
+    else if(this.canComment === "true")this.canComment = true;
+    
     if (self.isadmin == "true") self.isadmin = true;
     else if (self.isadmin == "false") self.isadmin = false;
 
