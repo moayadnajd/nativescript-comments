@@ -41,6 +41,7 @@ export class Common extends StackLayout {
   public static userEvent: string = "user";
   public replyText = "Reply";
   public likeText = "like";
+  public canComment :any = true;
   public activityindecator: ActivityIndicator;
   private rep: Repeater;
   private scrollview: any;
@@ -202,6 +203,11 @@ export class Common extends StackLayout {
       this.scroll = false;
     else
       this.scroll = true;
+
+    if (this.canComment === "false")
+      this.canComment = false;
+    else
+      this.canComment = true;
     let hrlight = this.parseOptions(new StackLayout(), { className: "hr-light" });
     this.headtitle = this.parseOptions(new Label(), { class: "comment-title", text: this.commentCount() });
     // this.addChild(grid);
@@ -326,13 +332,13 @@ export class Common extends StackLayout {
 
       }
     });
+    if(this.canComment){
+        footer.addChild(this.replytoWraper);
 
-    footer.addChild(this.replytoWraper);
+        footer.addChild(this.textField);
 
-    footer.addChild(this.textField);
-
-    footer.addChild(this.sendbtn);
-
+        footer.addChild(this.sendbtn);
+    }
 
     this.activityindecator = <ActivityIndicator>this.parseOptions(new ActivityIndicator(), { className: "comment-indicator", horizontalAlignment: 'center', verticalAlignment: 'middle', row: 2, col: 1 });
 
