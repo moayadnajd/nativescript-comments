@@ -22,6 +22,8 @@
             <Label text="cache plugin" tap="{{ goToSecondPage }}" pageName="/pages/cache/cache" class="drawerSectionItem" />
             <Label text="Change text" tap="{{ goToSecondPage }}" pageName="/pages/text/text" class="drawerSectionItem" />
             <Label text="No Scroll" tap="{{ goToSecondPage }}" pageName="/pages/scroll/scroll" class="drawerSectionItem" />
+            <Label text="Submission disabled" tap="{{ goToSecondPage }}" pageName="/pages/disableSubmit/disableSubmit" class="drawerSectionItem" />
+
           </StackLayout>
         </ScrollView>
       </StackLayout>

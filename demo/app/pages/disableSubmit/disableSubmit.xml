@@ -1,16 +1,12 @@
 <Page 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
-   xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
+  xmlns:nsDrawer="nativescript-pro-ui/sidedrawer" 
   xmlns:UI="nativescript-comments" loaded="pageLoaded" class="page">
- <Page.actionBar>
-     <ActionBar title="Cache plugins">
-      <ActionItem tap="onShare"
-         text="Menu" ios.position="left"
-         tap="{{ onOpenDrawerTap }}" 
-         android.position="actionBar"/>
+  <Page.actionBar>
+    <ActionBar title="scroll page">
+      <ActionItem tap="onShare" text="Menu" ios.position="left" tap="{{ onOpenDrawerTap }}" android.position="actionBar"/>
     </ActionBar>
   </Page.actionBar>
-
   <nsDrawer:RadSideDrawer id="sideDrawer" showOverNavigation="true">
     <nsDrawer:RadSideDrawer.drawerContent>
       <StackLayout class="drawerContent">
@@ -18,31 +14,25 @@
           <Label text="Comments"/>
         </StackLayout>
         <ScrollView>
-           <StackLayout class="drawerMenuContent">
+          <StackLayout class="drawerMenuContent">
             <Label text="Default" tap="{{ goToSecondPage }}" pageName="main-page" class="drawerSectionItem" />
-            <Label text="cache plugin" tap="{{ goToSecondPage }}" pageName="/pages/cache/cache" class="drawerSectionHeader" />
+            <Label text="cache plugin" tap="{{ goToSecondPage }}" pageName="/pages/cache/cache" class="drawerSectionItem" />
             <Label text="Change text" tap="{{ goToSecondPage }}" pageName="/pages/text/text" class="drawerSectionItem" />
             <Label text="No Scroll" tap="{{ goToSecondPage }}" pageName="/pages/scroll/scroll" class="drawerSectionItem" />
-               <Label text="Submission disabled" tap="{{ goToSecondPage }}" pageName="/pages/disableSubmit/disableSubmit" class="drawerSectionItem" />
-
-           </StackLayout>
+            <Label text="Submission disabled" tap="{{ goToSecondPage }}" pageName="/pages/disableSubmit/disableSubmit" class="drawerSectionHeader" />
+          </StackLayout>
         </ScrollView>
       </StackLayout>
     </nsDrawer:RadSideDrawer.drawerContent>
     <nsDrawer:RadSideDrawer.mainContent>
-   
-       <StackLayout class="p-20" id="mainstack">
-  
+      <ScrollView>
+        <StackLayout class="p-20" id="mainstack">
           <Image android:width="100"  ios:height="300" android:height="100"  src="~/images/shoe.jpg" stretch="fill"  />
-          
           <Label class="h2 p-b-10" text="NIKE AIR ZOOM PEGASUS" textWrap="true" />
-
           <Label class="p-b-10" text="The Nike Air Zoom Pegasus 34 Mo Farah. Inspired by 2017 10k world champion, Mo Farah. " textWrap="true" />
-           
-           <UI:Comments  like="{{ like }}" add="{{ add }}" items="{{ comments }}"   />
-
-          </StackLayout>
+          <UI:Comments scroll="false" canComment="false"  like="{{ like }}" add="{{ add }}" items="{{ comments }}" />
+        </StackLayout>
+      </ScrollView>
     </nsDrawer:RadSideDrawer.mainContent>
-  </nsDrawer:RadSideDrawer> 
-  
+  </nsDrawer:RadSideDrawer>
 </Page>
