@@ -49,6 +49,7 @@ export class Common extends StackLayout {
   private likeQ = [];
   private headtitle: any;
   public isadmin: any = false;
+  public canComment: any = true;
   public dateHandler: any;
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -202,6 +203,8 @@ export class Common extends StackLayout {
 
     if (this.scroll === "false") this.scroll = false;
     else this.scroll = true;
+    if (this.canComment === "false") this.canComment = false;
+    else this.canComment = true;
     if (self.isadmin == "true") self.isadmin = true;
     else if (self.isadmin == "false") self.isadmin = false;
 
@@ -363,12 +366,13 @@ export class Common extends StackLayout {
           });
       }
     });
+    if(this.canComment){
+        footer.addChild(this.replytoWraper);
 
-    footer.addChild(this.replytoWraper);
+        footer.addChild(this.textField);
 
-    footer.addChild(this.textField);
-
-    footer.addChild(this.sendbtn);
+        footer.addChild(this.sendbtn);
+    }
 
     this.activityindecator = <ActivityIndicator>this.parseOptions(
       new ActivityIndicator(),
