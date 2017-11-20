@@ -13,6 +13,7 @@ import { Button } from "tns-core-modules/ui/button";
 import { Repeater } from "tns-core-modules/ui/repeater";
 import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
+import {TextView} from "tns-core-modules/ui/text-view";
 
 export class Common extends StackLayout {
   public newComment: string = "";
@@ -50,6 +51,7 @@ export class Common extends StackLayout {
   private headtitle: any;
   public isadmin: any = false;
   public canComment: any = true;
+  public isTextArea: any = false;
   public dateHandler: any;
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -317,10 +319,12 @@ export class Common extends StackLayout {
     });
 
     // TextField class="comment-field" row= "1" col= "0" hint= "Comment..." text= "" />
-    this.textField = <TextField>this.parseOptions(new TextField(), {
+    this.textField = <TextView>this.parseOptions(new TextView(), {
       className: "comment-field",
       row: 2,
       col: 0,
+      editable:true,
+      // style:{placeholderColor:'red'},
       hint: "Comment..."
     });
 
