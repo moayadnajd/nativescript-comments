@@ -9,7 +9,7 @@
     }
   },
   "dependencies": {
-    "nativescript-comments": "../src",
+    "nativescript-comments": "*",
     "nativescript-fontawesome": "^1.0.0",
     "nativescript-iqkeyboardmanager": "^1.1.0",
     "nativescript-pro-ui": "^3.0.4",
