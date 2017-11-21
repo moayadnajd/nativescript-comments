@@ -51,7 +51,7 @@ export class Common extends StackLayout {
   private headtitle: any;
   public isadmin: any = false;
   public canComment: any = true;
-  public isTextArea: any = false;
+  public isTextView: any = false;
   public dateHandler: any;
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -208,8 +208,8 @@ export class Common extends StackLayout {
     if (this.canComment === "false") this.canComment = false;
     else if(this.canComment === "true")this.canComment = true;
 
-    if (this.isTextArea === "false") this.isTextArea = false;
-    else if(this.isTextArea === "true")this.isTextArea = true;
+    if (this.isTextView === "false") this.isTextView = false;
+    else if(this.isTextView === "true")this.isTextView = true;
 
     if (self.isadmin == "true") self.isadmin = true;
     else if (self.isadmin == "false") self.isadmin = false;
@@ -323,14 +323,25 @@ export class Common extends StackLayout {
     });
 
     // TextField class="comment-field" row= "1" col= "0" hint= "Comment..." text= "" />
-    this.textField = <TextView>this.parseOptions(new TextView(), {
-      className: "comment-field",
-      row: 2,
-      col: 0,
-      editable:true,
-      // style:{placeholderColor:'red'},
-      hint: "Comment..."
-    });
+      if(this.isTextView){
+          this.textField = <TextView>this.parseOptions(new TextView(), {
+              className: "comment-field",
+              row: 2,
+              col: 0,
+              editable:true,
+              height:'auto',
+              // style:{placeholderColor:'red'},
+              hint: "Comment..."
+          });
+      }
+      else {
+          this.textField = <TextField>this.parseOptions(new TextField(), {
+              className: "comment-field",
+              row: 2,
+              col: 0,
+              hint: "Comment..."
+          });
+      }
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
     this.sendbtn = this.parseOptions(new Button(), {
