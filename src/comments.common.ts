@@ -13,7 +13,7 @@ import { Button } from "tns-core-modules/ui/button";
 import { Repeater } from "tns-core-modules/ui/repeater";
 import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import {TextView} from "tns-core-modules/ui/text-view";
+import { TextView } from "tns-core-modules/ui/text-view";
 
 export class Common extends StackLayout {
   public newComment: string = "";
@@ -51,7 +51,7 @@ export class Common extends StackLayout {
   private headtitle: any;
   public isadmin: any = false;
   public canComment: any = true;
-  public isTextView: any = false;
+  public textview: any = false;
   public dateHandler: any;
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
@@ -206,10 +206,10 @@ export class Common extends StackLayout {
     if (this.scroll === "false") this.scroll = false;
     else this.scroll = true;
     if (this.canComment === "false") this.canComment = false;
-    else if(this.canComment === "true")this.canComment = true;
+    else if (this.canComment === "true") this.canComment = true;
 
-    if (this.isTextView === "false") this.isTextView = false;
-    else if(this.isTextView === "true")this.isTextView = true;
+    if (this.textview === "false") this.textview = false;
+    else if (this.textview === "true") this.textview = true;
 
     if (self.isadmin == "true") self.isadmin = true;
     else if (self.isadmin == "false") self.isadmin = false;
@@ -323,25 +323,25 @@ export class Common extends StackLayout {
     });
 
     // TextField class="comment-field" row= "1" col= "0" hint= "Comment..." text= "" />
-      if(this.isTextView){
-          this.textField = <TextView>this.parseOptions(new TextView(), {
-              className: "comment-field",
-              row: 2,
-              col: 0,
-              editable:true,
-              height:'auto',
-              // style:{placeholderColor:'red'},
-              hint: "Comment..."
-          });
-      }
-      else {
-          this.textField = <TextField>this.parseOptions(new TextField(), {
-              className: "comment-field",
-              row: 2,
-              col: 0,
-              hint: "Comment..."
-          });
-      }
+    if (this.textview) {
+      this.textField = <TextView>this.parseOptions(new TextView(), {
+        className: "comment-field",
+        id:"comment-field",
+        row: 2,
+        col: 0,
+        editable: true,
+        height: "auto",
+        // style:{placeholderColor:'red'},
+        hint: "Comment..."
+      });
+    } else {
+      this.textField = <TextField>this.parseOptions(new TextField(), {
+        className: "comment-field",
+        row: 2,
+        col: 0,
+        hint: "Comment..."
+      });
+    }
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
     this.sendbtn = this.parseOptions(new Button(), {
@@ -385,12 +385,12 @@ export class Common extends StackLayout {
           });
       }
     });
-    if(this.canComment){
-        footer.addChild(this.replytoWraper);
+    if (this.canComment) {
+      footer.addChild(this.replytoWraper);
 
-        footer.addChild(this.textField);
+      footer.addChild(this.textField);
 
-        footer.addChild(this.sendbtn);
+      footer.addChild(this.sendbtn);
     }
 
     this.activityindecator = <ActivityIndicator>this.parseOptions(
@@ -418,7 +418,7 @@ export class Common extends StackLayout {
     setTimeout(() => {
       this.init();
     }, 100);
-  
+
     let resorce = app.getResources();
     resorce["getlikeText"] = likes => {
       return self.likeText + " (" + likes + ")";

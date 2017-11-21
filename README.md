@@ -85,6 +85,7 @@ Comments box ready for integration inside you'r native script app
 | sendText | comment | the comment send button text |
 |editingText | editing your comment | the editing help text when you hit edit | 
 |xbtn | x | the exit edit or reply text can be font icon  |     
+|textview | false | boolean flag to make comment field  textview  or textfield | 
 ## License
 
 Apache License Version 2.0, January 2004
