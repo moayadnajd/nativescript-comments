@@ -1,8 +1,7 @@
 ﻿import * as application from 'tns-core-modules/application';
 let resorce = application.getResources();
 import { TNSFontIcon, fonticon } from 'nativescript-fonticon';
-import { Fontawesome } from 'nativescript-fontawesome';
-Fontawesome.init();
+
 TNSFontIcon.debug = false;
 TNSFontIcon.paths = {
     'ion': 'ionicons.css',
