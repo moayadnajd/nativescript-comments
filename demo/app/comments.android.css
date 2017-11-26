@@ -46,13 +46,15 @@ Comments {}
 }
 
 .comment-field {
-    padding: 5;
-    border-width: 1;
-    border-color: #999;
-    border-top-left-radius: 20;
-    border-bottom-left-radius: 20;
-    border-right-width: 0;
-    padding-right: 20;
+    padding: 0;
+    margin: 0;
+    padding-left: 10;
+    font-size: 14;
+    height: auto;
+    border-width: 0.1;
+    border-color: transparent;
+    vertical-align:center;
+    height: auto;
 }
 
 .comment-btn.loading {
@@ -60,12 +62,15 @@ Comments {}
 }
 
 .comment-btn {
-    padding: 6;
-    margin-left: -15;
-    border-width: 1;
+    padding: 0;
+    width: 60;
+    height: 31;
+    border-radius: 15;
     border-color: #999;
     border-radius: 20;
-    background-color: white;
+    color: #fff;
+    background-color: blue;
+    vertical-align: bottom;
 }
 
 .comment-indicator {
@@ -79,7 +84,12 @@ Comments {}
 }
 
 .comment-footer {
-    padding-top: 10;
+    margin-top: 10;
+    margin-bottom: 10;
+    border-width: 1;
+    border-color: #ccc;
+    border-radius: 20;
+    height: auto;
 }
 
 .comment-reply {

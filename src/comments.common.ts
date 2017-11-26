@@ -286,7 +286,7 @@ export class Common extends StackLayout {
     let footer = this.parseOptions(new GridLayout(), {
       className: "comment-footer",
       row: 1,
-      rows: ["auto", "auto"],
+      rows: ["auto"],
       columns: ["star", "auto"]
     });
 
@@ -405,7 +405,7 @@ export class Common extends StackLayout {
       }
     );
 
-    footer.addChild(this.activityindecator);
+    // footer.addChild(this.activityindecator);
 
     wraper.addChild(this.scrollview);
 
