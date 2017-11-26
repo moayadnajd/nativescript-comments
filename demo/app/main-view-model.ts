@@ -26,7 +26,7 @@ export class HelloWorldModel extends BaseViewModel {
       args.object.push({ image: "~/images/icon-50.png", id: self.random(1000), comment: args.comment, replyTo: args.to, username: "Demo User", likes: 0, isLike: false, datetime: Date.now() });
       console.log(self.comments.length);
       args.object.busy(false);
-    }, 2000);
+    }, 1000);
 
   }
 

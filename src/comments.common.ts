@@ -14,9 +14,9 @@ import { Repeater } from "tns-core-modules/ui/repeater";
 import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { TextView } from "tns-core-modules/ui/text-view";
-
+import { isAndroid, isIOS } from "tns-core-modules/platform";
 export class Common extends StackLayout {
-  public newComment: string = "";
+  private _newComment: string = "";
   public textReplyToHolder: any = "";
   public toText: string = "Repling to :";
   private replytoWraper: any;
@@ -54,6 +54,44 @@ export class Common extends StackLayout {
   public canComment: any = true;
   public textview: any = false;
   public dateHandler: any;
+
+  public get newComment(): string {
+    return this._newComment;
+  }
+
+  public set newComment(value: string) {
+    if (this.textview === true) this.adjustTextHeight(this.textField, value);
+    this._newComment = value;
+  }
+
+  private adjustTextHeight(textview, value) {
+    let linesCount = 0;
+let self = this;
+    if (isIOS) {
+      linesCount =
+        textview.ios.contentSize.height / textview.ios.font.lineHeight;
+      if (linesCount <= 5) {
+        textview.height = textview.ios.contentSize.height + 10;
+      }
+    } else {
+      linesCount = textview.android.getLineCount();
+      let lineHieght = 20;
+      if (linesCount <= 5) {
+        let height_in_pixels = linesCount * lineHieght;
+        textview.height = height_in_pixels;
+      } else {
+        let height_in_pixels = 5 * lineHieght;
+        textview.height = height_in_pixels;
+      }
+    }
+
+// let scrolltome = <Label>this.getViewById("comments-understack");
+//      this.scrollview.scrollToVerticalOffset(
+//             scrolltome.getLocationRelativeTo(self).y,
+//             true
+//           );
+  }
+
   public replyAction(args) {
     let self = <Common>args.object.parent.parent.parent.parent.bindingContext;
     let obj = args.object;
@@ -261,7 +299,9 @@ export class Common extends StackLayout {
     else commentsDateTo = "commentsDateTo";
 
     this.rep.itemTemplate = `
-        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${plugin} class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
         <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
         </StackLayout>
@@ -272,7 +312,9 @@ export class Common extends StackLayout {
             <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
             <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
             <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
-            <Label  id="{{ id }}" text="{{ ${commentsDateTo}(datetime) }}" class="comment-details" textWrap="true" />
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
           </StackLayout>
           <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
          </GridLayout>
@@ -327,7 +369,7 @@ export class Common extends StackLayout {
     if (this.textview) {
       this.textField = <TextView>this.parseOptions(new TextView(), {
         className: "comment-field",
-        id:"comment-field",
+        id: "comment-field",
         row: 2,
         col: 0,
         editable: true,
@@ -346,8 +388,8 @@ export class Common extends StackLayout {
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
     this.sendbtn = this.parseOptions(new Button(), {
-      className: "comment-btn "+this.fontClass,
-      row: 2,
+      className: "comment-btn " + this.fontClass,
+      row: 1,
       col: 1,
       text: this.sendText
     });
@@ -405,13 +447,16 @@ export class Common extends StackLayout {
       }
     );
 
-    // footer.addChild(this.activityindecator);
+    footer.addChild(this.activityindecator);
 
     wraper.addChild(this.scrollview);
 
     wraper.addChild(footer);
 
     this.addChild(wraper);
+    this.addChild(
+      this.parseOptions(new StackLayout(), { id: "comments-understack" })
+    );
   }
   constructor() {
     super();
@@ -480,22 +525,15 @@ export class Common extends StackLayout {
     };
 
     app.setResources(resorce);
-    // let wraper = this.renderGrid({ rows: { star: title, auto: hr1 } });
-    // let hr2 = this.renderStack();
-    // this.addChild(hr2);
-    // this.addChild(wraper);
-    // let wraper = this.renderGrid({ className: "comment-foote", row: 1, rows: ["auto", "auto"], columns: ["star", "auto"] });
   }
 
   public busy(flag) {
     if (flag) {
       this.activityindecator.busy = true;
-      this.activityindecator.className = "comment-indicator loading";
-      this.sendbtn.className = "comment-btn loading "+this.fontClass;
+      this.sendbtn.className = "comment-btn loading " + this.fontClass;
     } else {
       this.activityindecator.busy = false;
-      this.activityindecator.className = "comment-indicator";
-      this.sendbtn.className = "comment-btn"+this.fontClass;
+      this.sendbtn.className = "comment-btn " + this.fontClass;
     }
   }
   public push(obj) {
