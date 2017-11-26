@@ -24,6 +24,7 @@ export class Common extends StackLayout {
     return Math.floor(Math.random() * range + 1);
   }
   public xbtn = "x";
+  public fontClass = "fa";
   public editing: number = 0;
   public items: ObservableArray<any>;
   public replyingto: Label;
@@ -285,7 +286,7 @@ export class Common extends StackLayout {
     let footer = this.parseOptions(new GridLayout(), {
       className: "comment-footer",
       row: 1,
-      rows: ["auto", "auto"],
+      rows: ["auto"],
       columns: ["star", "auto"]
     });
 
@@ -345,7 +346,7 @@ export class Common extends StackLayout {
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
     this.sendbtn = this.parseOptions(new Button(), {
-      className: "comment-btn fa",
+      className: "comment-btn "+this.fontClass,
       row: 2,
       col: 1,
       text: this.sendText
@@ -404,7 +405,7 @@ export class Common extends StackLayout {
       }
     );
 
-    footer.addChild(this.activityindecator);
+    // footer.addChild(this.activityindecator);
 
     wraper.addChild(this.scrollview);
 
@@ -490,11 +491,11 @@ export class Common extends StackLayout {
     if (flag) {
       this.activityindecator.busy = true;
       this.activityindecator.className = "comment-indicator loading";
-      this.sendbtn.className = "fa comment-btn loading";
+      this.sendbtn.className = "comment-btn loading "+this.fontClass;
     } else {
       this.activityindecator.busy = false;
       this.activityindecator.className = "comment-indicator";
-      this.sendbtn.className = "fa comment-btn";
+      this.sendbtn.className = "comment-btn"+this.fontClass;
     }
   }
   public push(obj) {

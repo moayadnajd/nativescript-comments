@@ -31,7 +31,7 @@
           <Image android:width="100"  ios:height="300" android:height="100"  src="~/images/shoe.jpg" stretch="fill"  />
           <Label class="h2 p-b-10" text="NIKE AIR ZOOM PEGASUS" textWrap="true" />
           <Label class="p-b-10" text="The Nike Air Zoom Pegasus 34 Mo Farah. Inspired by 2017 10k world champion, Mo Farah. " textWrap="true" />
-          <UI:Comments scroll="false"  like="{{ like }}" add="{{ add }}" items="{{ comments }}" />
+          <UI:Comments scroll="false"  like="{{ like }}"  sendText="{{'fa-check'|fonticon }}" add="{{ add }}" items="{{ comments }}" />
         </StackLayout>
       </ScrollView>
     </nsDrawer:RadSideDrawer.mainContent>

@@ -1,8 +1,13 @@
 ﻿import * as application from 'tns-core-modules/application';
 let resorce = application.getResources();
-import { Fontawesome } from 'nativescript-fontawesome';
-Fontawesome.init();
+import { TNSFontIcon, fonticon } from 'nativescript-fonticon';
 
+TNSFontIcon.debug = false;
+TNSFontIcon.paths = {
+    'ion': 'ionicons.css',
+    'fa': 'font-awesome.css'
+};
+TNSFontIcon.loadCss();
 // this is the date handler used in text page
 resorce['arabicDateTime'] = (time: any) => {
     switch (typeof <any>time) {
@@ -57,6 +62,7 @@ resorce['arabicDateTime'] = (time: any) => {
         }
     return time;
 };
+resorce['fonticon'] = fonticon;
 application.setResources(resorce);
 
 

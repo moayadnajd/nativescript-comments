@@ -1,5 +1,11 @@
 ﻿@import 'nativescript-theme-core/css/core.light.css';
 @import 'comments.css';
+.ion {
+    font-family: ionicons, "Ionicons"
+}
+.fa {
+    font-family: FontAwesome, fontawesome-webfont;
+}
 .headerContent {
     height: 56;
     text-align: center;
