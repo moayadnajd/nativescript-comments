@@ -16,8 +16,8 @@
     padding: 10;
     background-color: lightgray;
 }
-#teststack{
-height: 390;
+.comment-textview{
+height: 50;
 }
 .drawerSectionItem {
     padding: 10;

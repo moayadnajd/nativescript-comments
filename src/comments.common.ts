@@ -60,7 +60,7 @@ export class Common extends StackLayout {
   }
 
   public set newComment(value: string) {
-    if (this.textview === true) this.adjustTextHeight(this.textField, value);
+   // if (this.textview === true) this.adjustTextHeight(this.textField, value);
     this._newComment = value;
   }
 
@@ -368,18 +368,18 @@ let self = this;
     // TextField class="comment-field" row= "1" col= "0" hint= "Comment..." text= "" />
     if (this.textview) {
       this.textField = <TextView>this.parseOptions(new TextView(), {
-        className: "comment-field",
+        className: "comment-field comment-textview",
         id: "comment-field",
         row: 2,
         col: 0,
         editable: true,
-        height: "auto",
         // style:{placeholderColor:'red'},
         hint: "Comment..."
       });
     } else {
       this.textField = <TextField>this.parseOptions(new TextField(), {
         className: "comment-field",
+        id: "comment-field",
         row: 2,
         col: 0,
         hint: "Comment..."
