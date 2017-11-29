@@ -60,13 +60,13 @@ export class Common extends StackLayout {
   }
 
   public set newComment(value: string) {
-   // if (this.textview === true) this.adjustTextHeight(this.textField, value);
+    // if (this.textview === true) this.adjustTextHeight(this.textField, value);
     this._newComment = value;
   }
 
   private adjustTextHeight(textview, value) {
     let linesCount = 0;
-let self = this;
+    let self = this;
     if (isIOS) {
       linesCount =
         textview.ios.contentSize.height / textview.ios.font.lineHeight;
@@ -85,11 +85,11 @@ let self = this;
       }
     }
 
-// let scrolltome = <Label>this.getViewById("comments-understack");
-//      this.scrollview.scrollToVerticalOffset(
-//             scrolltome.getLocationRelativeTo(self).y,
-//             true
-//           );
+    // let scrolltome = <Label>this.getViewById("comments-understack");
+    //      this.scrollview.scrollToVerticalOffset(
+    //             scrolltome.getLocationRelativeTo(self).y,
+    //             true
+    //           );
   }
 
   public replyAction(args) {
@@ -267,7 +267,7 @@ let self = this;
       this.items = new ObservableArray(this.items);
     // <GridLayout rows="*,auto">
     let wraper = this.parseOptions(new GridLayout(), {
-      rows: ["star", "auto"]
+      rows: ["star", "auto", "auto"]
     });
 
     let imageholder = "";
@@ -325,21 +325,23 @@ let self = this;
 
     // <GridLayout class="comment-footer" row= "1" rows= "auto,auto" columns= "*,auto" >
     //             </GridLayout>
-    let footer = this.parseOptions(new GridLayout(), {
-      className: "comment-footer",
-      row: 1,
-      rows: ["auto"],
-      columns: ["star", "auto"]
-    });
-
     this.replytoWraper = this.parseOptions(new StackLayout(), {
-      row: 0,
-      colSpan: 2,
+      row: 1,
       class: "comment-reply-wrapper",
       orientation: "horizontal",
       width: "100%",
       visibility: "collapse"
+    }); 
+
+    
+    let footer = this.parseOptions(new GridLayout(), {
+      className: "comment-footer",
+      row: 2,
+      rows: ["auto"],
+      columns: ["star", "auto"]
     });
+
+    
 
     let xbtn = this.parseOptions(new Label(), {
       className: "comment-reply-x-btn fa",
@@ -429,8 +431,6 @@ let self = this;
       }
     });
     if (this.canComment) {
-      footer.addChild(this.replytoWraper);
-
       footer.addChild(this.textField);
 
       footer.addChild(this.sendbtn);
@@ -450,7 +450,7 @@ let self = this;
     footer.addChild(this.activityindecator);
 
     wraper.addChild(this.scrollview);
-
+    wraper.addChild(this.replytoWraper);
     wraper.addChild(footer);
 
     this.addChild(wraper);
