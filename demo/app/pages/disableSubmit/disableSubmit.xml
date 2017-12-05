@@ -3,7 +3,7 @@
   xmlns:nsDrawer="nativescript-pro-ui/sidedrawer" 
   xmlns:UI="nativescript-comments" loaded="pageLoaded" class="page">
   <Page.actionBar>
-    <ActionBar title="scroll page">
+    <ActionBar title="Disable submission ">
       <ActionItem tap="onShare" text="Menu" ios.position="left" tap="{{ onOpenDrawerTap }}" android.position="actionBar"/>
     </ActionBar>
   </Page.actionBar>
