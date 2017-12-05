@@ -75,7 +75,7 @@ Comments box ready for integration inside you'r native script app
 | add | function(arg){} | event on comment added you can access the object to push the comment buy args.object.push($comment-object) and you can get the id of the comment that replyed to by args.to |
 | like | function(arg){} | event on like clicked send with obj.to and you can toggle the like with args.object.toggle(args.to) |
 | scroll | true | enable or disable scrollview inside the comments holder |
-| canComment | true | hide or show submission box |
+| canComment | true | disable or enable submission|
 | imagetag | <Image /> | the xml element of the image  so you can change it if you need to add cache plugin or something |
 | plugin | empty string | plugin include statment like xmlns:IC="nativescript-web-image-cache" |
 | title | Comments | the title of the comments box |

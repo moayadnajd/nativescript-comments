@@ -297,8 +297,8 @@ export class Common extends StackLayout {
     let commentsDateTo;
     if (this.dateHandler) commentsDateTo = this.dateHandler;
     else commentsDateTo = "commentsDateTo";
-
-    this.rep.itemTemplate = `
+    if (this.canComment)
+      this.rep.itemTemplate = `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
           plugin
         } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
@@ -320,6 +320,26 @@ export class Common extends StackLayout {
          </GridLayout>
         </GridLayout>
         `;
+    else
+      this.rep.itemTemplate = `
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
+        ${imageholder}
+        </StackLayout>
+        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="1" col="1" text="{{ comment }}" textWrap="true" />
+          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
+          </StackLayout>
+          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
+         </GridLayout>
+        </GridLayout>
+        `;
     if (this.scroll === true) this.scrollview.content = this.rep;
     else this.scrollview.addChild(this.rep);
 
@@ -331,17 +351,14 @@ export class Common extends StackLayout {
       orientation: "horizontal",
       width: "100%",
       visibility: "collapse"
-    }); 
+    });
 
-    
     let footer = this.parseOptions(new GridLayout(), {
       className: "comment-footer",
       row: 2,
       rows: ["auto"],
       columns: ["star", "auto"]
     });
-
-    
 
     let xbtn = this.parseOptions(new Label(), {
       className: "comment-reply-x-btn fa",
@@ -430,11 +447,10 @@ export class Common extends StackLayout {
           });
       }
     });
-    if (this.canComment) {
-      footer.addChild(this.textField);
 
-      footer.addChild(this.sendbtn);
-    }
+    footer.addChild(this.textField);
+
+    footer.addChild(this.sendbtn);
 
     this.activityindecator = <ActivityIndicator>this.parseOptions(
       new ActivityIndicator(),
@@ -451,8 +467,9 @@ export class Common extends StackLayout {
 
     wraper.addChild(this.scrollview);
     wraper.addChild(this.replytoWraper);
-    wraper.addChild(footer);
-
+    if (this.canComment) {
+      wraper.addChild(footer);
+    }
     this.addChild(wraper);
     this.addChild(
       this.parseOptions(new StackLayout(), { id: "comments-understack" })
