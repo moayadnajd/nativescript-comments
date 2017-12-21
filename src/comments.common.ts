@@ -330,7 +330,7 @@ export class Common extends StackLayout {
         </StackLayout>
         <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
           <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
-          <Label row="1" col="1" text="{{ comment }}" textWrap="true" />
+          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
           <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
             <Label  id="{{ id }}" text="{{ ${
               commentsDateTo
