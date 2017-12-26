@@ -26,7 +26,7 @@ export class Common extends StackLayout {
   public xbtn = "x";
   public fontClass = "fa";
   public editing: number = 0;
-  public items: ObservableArray<any>;
+  public items: ObservableArray<any> = new ObservableArray([]);
   public replyingto: Label;
   public replyTo: number = 0;
   public textField: any;
