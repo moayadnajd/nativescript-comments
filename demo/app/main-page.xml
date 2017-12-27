@@ -30,7 +30,7 @@
           <Image android:width="100" ios:height="300" android:height="100" src="~/images/shoe.jpg" stretch="fill" />
           <Label class="h2 p-b-10" text="NIKE AIR ZOOM PEGASUS" textWrap="true" />
           <Label class="p-b-10" text="The Nike Air Zoom Pegasus 34 Mo Farah. Inspired by 2017 10k world champion, Mo Farah. " textWrap="true" />
-           <UI:Comments row="0"  user="{{ userTap }}" textview="true" scroll="false" delete="{{ delete }}" isadmin="true" edit="{{ edit }}" fontClass="ion" sendText="{{ 'ion-checkmark-round' | fonticon }}" like="{{ like }}" add="{{ add }}" items="{{ comments }}" />
+           <UI:Comments row="0"  user="{{ userTap }}" textview="true" scroll="false" delete="{{ delete }}" isadmin="true" edit="{{ edit }}" fontClass="ion" sendText="{{ 'ion-checkmark-round' | fonticon }}" like="{{ like }}" add="{{ add }}" templateSelector="{{ templateSelector }}" items="{{ comments }}" />
         </StackLayout>
       </ScrollView>
     </nsDrawer:RadSideDrawer.mainContent>

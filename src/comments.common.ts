@@ -54,6 +54,53 @@ export class Common extends StackLayout {
   public canComment: any = true;
   public textview: any = false;
   public dateHandler: any;
+  public templateSelector: (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any) => string;
+
+  private baseTemplateSelector (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
+    if (canComment)
+      return `
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
+        ${imageholder}
+        </StackLayout>
+        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
+          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
+            <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
+            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
+            <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
+          </StackLayout>
+          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
+         </GridLayout>
+        </GridLayout>
+        `;
+    else
+      return `
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
+        ${imageholder}
+        </StackLayout>
+        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
+          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
+          </StackLayout>
+          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
+         </GridLayout>
+        </GridLayout>
+        `;
+  }
 
   public get newComment(): string {
     return this._newComment;
@@ -297,49 +344,13 @@ export class Common extends StackLayout {
     let commentsDateTo;
     if (this.dateHandler) commentsDateTo = this.dateHandler;
     else commentsDateTo = "commentsDateTo";
-    if (this.canComment)
-      this.rep.itemTemplate = `
-        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
-          plugin
-        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
-        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
-        ${imageholder}
-        </StackLayout>
-        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
-          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
-          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
-            <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
-            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
-            <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
-            <Label  id="{{ id }}" text="{{ ${
-              commentsDateTo
-            }(datetime) }}" class="comment-details" textWrap="true" />
-          </StackLayout>
-          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
-         </GridLayout>
-        </GridLayout>
-        `;
-    else
-      this.rep.itemTemplate = `
-        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
-          plugin
-        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
-        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
-        ${imageholder}
-        </StackLayout>
-        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
-          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
-          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
-            <Label  id="{{ id }}" text="{{ ${
-              commentsDateTo
-            }(datetime) }}" class="comment-details" textWrap="true" />
-          </StackLayout>
-          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
-         </GridLayout>
-        </GridLayout>
-        `;
+
+    if(typeof this.templateSelector != "function"){
+      this.templateSelector = this.baseTemplateSelector;
+    }
+
+    this.rep.itemTemplate = this.templateSelector(this.canComment, plugin, imageholder, commentsDateTo);
+
     if (this.scroll === true) this.scrollview.content = this.rep;
     else this.scrollview.addChild(this.rep);
 
