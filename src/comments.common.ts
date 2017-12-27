@@ -54,9 +54,9 @@ export class Common extends StackLayout {
   public canComment: any = true;
   public textview: any = false;
   public dateHandler: any;
-  public templateSelector: (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any) => string;
+  public customTemplate: (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any) => string;
 
-  private baseTemplateSelector (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
+  private baseTemplate (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
     if (canComment)
       return `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
@@ -345,11 +345,11 @@ export class Common extends StackLayout {
     if (this.dateHandler) commentsDateTo = this.dateHandler;
     else commentsDateTo = "commentsDateTo";
 
-    if(typeof this.templateSelector != "function"){
-      this.templateSelector = this.baseTemplateSelector;
+    if(typeof this.customTemplate != "function"){
+      this.customTemplate = this.baseTemplate;
     }
 
-    this.rep.itemTemplate = this.templateSelector(this.canComment, plugin, imageholder, commentsDateTo);
+    this.rep.itemTemplate = this.customTemplate(this.canComment, plugin, imageholder, commentsDateTo);
 
     if (this.scroll === true) this.scrollview.content = this.rep;
     else this.scrollview.addChild(this.rep);

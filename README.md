@@ -87,7 +87,7 @@ Comments box ready for integration inside you'r native script app
 |editingText | editing your comment | the editing help text when you hit edit |
 |xbtn | x | the exit edit or reply text can be font icon  |     
 |textview | false | boolean flag to make comment field  textview  or textfield | 
-|templateSelector| function(canComment, plugin, imageholder, commentsDateTo): string {} | can return own comment template string. See main-view-model.ts in demo |
+|customTemplate| function(canComment, plugin, imageholder, commentsDateTo): string {} | can return own comment template string. See main-view-model.ts in demo |
 
 ## License
 

@@ -11,7 +11,7 @@ export class HelloWorldModel extends BaseViewModel {
     { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", isMy: true, username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
   ]);
 
-  templateSelector(canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
+  customTemplate(canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
     if (canComment){
       return `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
