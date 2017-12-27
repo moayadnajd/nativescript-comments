@@ -438,7 +438,8 @@ export class Common extends StackLayout {
             eventName: Common.editEvent,
             object: self,
             comment: self.newComment,
-            id: self.editing
+            id: self.editing,
+            to: self.replyTo
           });
           let toedit = self.items.filter(elemet => {
             return elemet.id == self.editing;
