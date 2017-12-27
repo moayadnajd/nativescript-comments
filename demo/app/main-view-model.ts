@@ -8,7 +8,7 @@ export class HelloWorldModel extends BaseViewModel {
   public comments = new ObservableArray([
     { editing: true, image: "~/images/icon-50.png", id: 1, comment: "First Comment", username: "Moayad Najdwai", likes: this.random(10), isLike: false, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
     { image: "~/images/icon-50.png", id: 2, comment: "hello", username: "Hashem najdawi", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-    { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", isMy: true, username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+    { image: "~/images/icon-50.png", id: 3, replyTo: 1, comment: "First Reply", isOwn: true, username: "Demo User", likes: this.random(10), isLike: true, datetime: new Date(Date.now() - 24 * 60 * 60 * 1000) }
   ]);
 
   customTemplate(canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
@@ -16,7 +16,7 @@ export class HelloWorldModel extends BaseViewModel {
       return `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
           plugin
-        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
         <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
         </StackLayout>
@@ -39,7 +39,7 @@ export class HelloWorldModel extends BaseViewModel {
     return `
       <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
         plugin
-      } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+      } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
       <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
       ${imageholder}
       </StackLayout>
@@ -69,7 +69,7 @@ export class HelloWorldModel extends BaseViewModel {
     let self = this;
     args.object.busy(true)
     setTimeout(function () {
-      args.object.push({ image: "~/images/icon-50.png", id: self.random(1000), isMy: true, comment: args.comment, replyTo: args.to, username: "Demo User", likes: 0, isLike: false, datetime: Date.now() });
+      args.object.push({ image: "~/images/icon-50.png", id: self.random(1000), isOwn: true, comment: args.comment, replyTo: args.to, username: "Demo User", likes: 0, isLike: false, datetime: Date.now() });
       console.log(self.comments.length);
       args.object.busy(false);
     }, 1000);

@@ -61,7 +61,7 @@ export class Common extends StackLayout {
       return `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
           plugin
-        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
         <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
         </StackLayout>
@@ -84,7 +84,7 @@ export class Common extends StackLayout {
       return `
         <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
           plugin
-        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isMy ? ' is-my' : '') }}" rows="auto" columns="auto,*">
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
         <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
         ${imageholder}
         </StackLayout>

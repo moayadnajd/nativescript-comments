@@ -119,11 +119,11 @@ Comments {}
     border-radius: 50;
 }
 
-.comment.is-my .comment-username{
+.comment.own .comment-username{
     color: red;
 }
 
-.comment.is-my .comment-text {
-    background-color: #fafafa;
-    border-radius: 15;
+.comment.own .comment-text {
+    background-color: #0db9e4;
+    color: #fff;
 }
