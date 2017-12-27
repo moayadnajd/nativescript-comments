@@ -356,12 +356,12 @@ export class Common extends StackLayout {
 
     // <GridLayout class="comment-footer" row= "1" rows= "auto,auto" columns= "*,auto" >
     //             </GridLayout>
-    this.replytoWraper = this.parseOptions(new StackLayout(), {
+    this.replytoWraper = this.parseOptions(new GridLayout(), {
       row: 1,
       class: "comment-reply-wrapper",
-      orientation: "horizontal",
       width: "100%",
-      visibility: "collapse"
+      visibility: "collapse",
+      columns: ["auto","auto", "star"]
     });
 
     let footer = this.parseOptions(new GridLayout(), {
@@ -373,17 +373,21 @@ export class Common extends StackLayout {
 
     let xbtn = this.parseOptions(new Label(), {
       className: "comment-reply-x-btn fa",
-      row: 1,
-      col: 1,
+      row: 0,
+      col: 0,
       text: this.xbtn
     });
     this.replyingto = this.parseOptions(new Label(), {
       className: "comment-replyingto",
-      text: this.toText
+      text: this.toText,
+      row: 0,
+      col: 1,
     });
     this.textReplyToHolder = this.parseOptions(new Label(), {
       className: "comment-reply-username",
-      text: this.replyTo
+      text: this.replyTo,
+      row: 1,
+      col: 2,
     });
     this.replytoWraper.addChild(xbtn);
     this.replytoWraper.addChild(this.replyingto);
