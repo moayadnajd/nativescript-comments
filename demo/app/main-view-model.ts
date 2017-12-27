@@ -25,7 +25,7 @@ export class HelloWorldModel extends BaseViewModel {
           <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
           <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
             <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
-            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
+            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-separator" />
             <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
             <Label  id="{{ id }}" text="{{ ${
               commentsDateTo
