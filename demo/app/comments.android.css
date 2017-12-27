@@ -29,7 +29,10 @@ Comments {}
 }
 
 .comment-text {
-    color: #595959;
+    color: #fff;
+    border-radius: 15;
+    padding: 10;
+    background-color: #595959
 }
 
 .comment-details {
@@ -132,3 +135,11 @@ Comments {}
     border-radius: 50;
 }
 
+.comment.own .comment-username{
+    color: red;
+}
+
+.comment.own .comment-text {
+    background-color: #0db9e4;
+    color: #fff;
+}
