@@ -40,6 +40,7 @@ export class Common extends StackLayout {
   public static editEvent: string = "edit";
   public static addEvent: string = "add";
   public static userEvent: string = "user";
+  public static mentionEvent: string = "mention";
   public replyText = "Reply";
   public likeText = "like";
   public activityindecator: ActivityIndicator;
@@ -410,6 +411,15 @@ export class Common extends StackLayout {
         // style:{placeholderColor:'red'},
         hint: "Comment..."
       });
+      this.textField.on("textChange", (a)=>{
+          if(!!a.value.length && a.value[a.value.length - 1] === "@"){
+              this.notify({
+                  eventName: Common.mentionEvent,
+                  object: a.object,
+                  value: a.value
+              });
+          }
+      })
     } else {
       this.textField = <TextField>this.parseOptions(new TextField(), {
         className: "comment-field",
@@ -418,6 +428,15 @@ export class Common extends StackLayout {
         col: 0,
         hint: "Comment..."
       });
+      this.textField.on("textChange", (a)=>{
+          if(!!a.value.length && a.value[a.value.length - 1] === "@"){
+              this.notify({
+                  eventName: Common.mentionEvent,
+                  object: a.object,
+                  value: a.value
+              });
+          }
+      })
     }
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
