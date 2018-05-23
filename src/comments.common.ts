@@ -40,6 +40,7 @@ export class Common extends StackLayout {
   public static editEvent: string = "edit";
   public static addEvent: string = "add";
   public static userEvent: string = "user";
+  public static mentionEvent: string = "mention";
   public replyText = "Reply";
   public likeText = "like";
   public activityindecator: ActivityIndicator;
@@ -54,6 +55,53 @@ export class Common extends StackLayout {
   public canComment: any = true;
   public textview: any = false;
   public dateHandler: any;
+  public customTemplate: (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any) => string;
+
+  private baseTemplate (canComment: boolean, plugin: any, imageholder: string, commentsDateTo: any): string {
+    if (canComment)
+      return `
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
+        ${imageholder}
+        </StackLayout>
+        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
+          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
+            <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
+            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-separator" />
+            <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
+          </StackLayout>
+          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
+         </GridLayout>
+        </GridLayout>
+        `;
+    else
+      return `
+        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
+          plugin
+        } class="{{ 'comment' + (replyTo ? ' comment-reply' : '') + (isOwn ? ' own' : '') }}" rows="auto" columns="auto,*">
+        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
+        ${imageholder}
+        </StackLayout>
+        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
+          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
+          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
+          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
+            <Label  id="{{ id }}" text="{{ ${
+              commentsDateTo
+            }(datetime) }}" class="comment-details" textWrap="true" />
+          </StackLayout>
+          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
+         </GridLayout>
+        </GridLayout>
+        `;
+  }
 
   public get newComment(): string {
     return this._newComment;
@@ -297,60 +345,24 @@ export class Common extends StackLayout {
     let commentsDateTo;
     if (this.dateHandler) commentsDateTo = this.dateHandler;
     else commentsDateTo = "commentsDateTo";
-    if (this.canComment)
-      this.rep.itemTemplate = `
-        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
-          plugin
-        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
-        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
-        ${imageholder}
-        </StackLayout>
-        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
-          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
-          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
-            <Label text="{{ getlikeText(likes) }}"  dataid="{{ id }}"  tap="{{$parents['Repeater'].likeAction,$parents['Repeater'].likeAction}}" isLike="{{ isLike }}" likes="{{ likes }}"  class="{{ isLike ? 'comment-action like liked' : 'comment-action like'}}" textWrap="true" />
-            <Label  visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  text="." class="comment-seprator" />
-            <Label visibility="{{ replyTo  ? 'collapse' : 'visible'}}"  dataid="{{ id }}" dataname="{{ username }}" text="{{$parents['Repeater'].replyText,$parents['Repeater'].replyText}}" tap="{{$parents['Repeater'].replyAction,$parents['Repeater'].replyAction}}" class="comment-action reply" textWrap="true" />
-            <Label  id="{{ id }}" text="{{ ${
-              commentsDateTo
-            }(datetime) }}" class="comment-details" textWrap="true" />
-          </StackLayout>
-          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
-         </GridLayout>
-        </GridLayout>
-        `;
-    else
-      this.rep.itemTemplate = `
-        <GridLayout dataediting="{{ editing,editing }}" dataid="{{ id }}" datacomment="{{ comment }}" longPress="{{$parents['Repeater'].LongPress,$parents['Repeater'].LongPress}}"  ${
-          plugin
-        } class="{{ replyTo  ? 'comment comment-reply' : 'comment'}}" rows="auto" columns="auto,*">
-        <StackLayout dataid="{{ id }}" tap="{{$parents['Repeater'].userImageAction,$parents['Repeater'].userImageAction}}"  verticalAlignment="top" row="0" col="0">
-        ${imageholder}
-        </StackLayout>
-        <GridLayout row="0" col="1" rows="auto,auto,auto,auto">
-          <Label row="0" col="1" dataid="{{ id }}" tap="{{$parents['Repeater'].userNameAction,$parents['Repeater'].userNameAction}}" text="{{ username }}" class="comment-username" textWrap="true" />
-          <Label row="1" col="1" class="comment-text" text="{{ comment }}" textWrap="true" />
-          <StackLayout class="comment-action-bar" row="2" orientation="horizontal">
-            <Label  id="{{ id }}" text="{{ ${
-              commentsDateTo
-            }(datetime) }}" class="comment-details" textWrap="true" />
-          </StackLayout>
-          <StackLayout row="3"  id="{{ scrolltome ? scrolltome : ''  }}" />
-         </GridLayout>
-        </GridLayout>
-        `;
+
+    if(typeof this.customTemplate != "function"){
+      this.customTemplate = this.baseTemplate;
+    }
+
+    this.rep.itemTemplate = this.customTemplate(this.canComment, plugin, imageholder, commentsDateTo);
+
     if (this.scroll === true) this.scrollview.content = this.rep;
     else this.scrollview.addChild(this.rep);
 
     // <GridLayout class="comment-footer" row= "1" rows= "auto,auto" columns= "*,auto" >
     //             </GridLayout>
-    this.replytoWraper = this.parseOptions(new StackLayout(), {
+    this.replytoWraper = this.parseOptions(new GridLayout(), {
       row: 1,
       class: "comment-reply-wrapper",
-      orientation: "horizontal",
       width: "100%",
-      visibility: "collapse"
+      visibility: "collapse",
+      columns: ["auto","auto", "star"]
     });
 
     let footer = this.parseOptions(new GridLayout(), {
@@ -362,17 +374,21 @@ export class Common extends StackLayout {
 
     let xbtn = this.parseOptions(new Label(), {
       className: "comment-reply-x-btn fa",
-      row: 1,
-      col: 1,
+      row: 0,
+      col: 0,
       text: this.xbtn
     });
     this.replyingto = this.parseOptions(new Label(), {
       className: "comment-replyingto",
-      text: this.toText
+      text: this.toText,
+      row: 0,
+      col: 1,
     });
     this.textReplyToHolder = this.parseOptions(new Label(), {
       className: "comment-reply-username",
-      text: this.replyTo
+      text: this.replyTo,
+      row: 1,
+      col: 2,
     });
     this.replytoWraper.addChild(xbtn);
     this.replytoWraper.addChild(this.replyingto);
@@ -395,6 +411,15 @@ export class Common extends StackLayout {
         // style:{placeholderColor:'red'},
         hint: "Comment..."
       });
+      this.textField.on("textChange", (a)=>{
+          if(!!a.value.length && a.value[a.value.length - 1] === "@"){
+              this.notify({
+                  eventName: Common.mentionEvent,
+                  object: a.object,
+                  value: a.value
+              });
+          }
+      })
     } else {
       this.textField = <TextField>this.parseOptions(new TextField(), {
         className: "comment-field",
@@ -403,6 +428,15 @@ export class Common extends StackLayout {
         col: 0,
         hint: "Comment..."
       });
+      this.textField.on("textChange", (a)=>{
+          if(!!a.value.length && a.value[a.value.length - 1] === "@"){
+              this.notify({
+                  eventName: Common.mentionEvent,
+                  object: a.object,
+                  value: a.value
+              });
+          }
+      })
     }
 
     // <Button class="comment-btn" row= "1" col= "1" text= "comment" tap= "" />
@@ -427,7 +461,8 @@ export class Common extends StackLayout {
             eventName: Common.editEvent,
             object: self,
             comment: self.newComment,
-            id: self.editing
+            id: self.editing,
+            to: self.replyTo
           });
           let toedit = self.items.filter(elemet => {
             return elemet.id == self.editing;
