@@ -118,12 +118,3 @@ Comments {}
     border-color: #999;
     border-radius: 50;
 }
-
-.comment.own .comment-username{
-    color: red;
-}
-
-.comment.own .comment-text {
-    background-color: #0db9e4;
-    color: #fff;
-}
